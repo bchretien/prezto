@@ -23,12 +23,12 @@ zstyle -s ':prezto:module:cmake' generator '_cmake_generator' \
   || _cmake_generator=
 
 # Whether to look for clang as well.
-zstyle -b ':prezto:module:cmake' support-clang '_cmake_support_clang' \
-  || _cmake_support_clang=true
+zstyle -s ':prezto:module:cmake' support-clang '_cmake_support_clang' \
+  || _cmake_support_clang='yes'
 
 # Check for clang.
 _cmake_has_clang=false
-if (( ${_cmake_support_clang} && $+commands[clang] )); then
+if [[ ${_cmake_support_clang} == 'yes' && $+commands[clang] ]]; then
   _cmake_has_clang=true
 fi
 
@@ -69,9 +69,10 @@ function makeBuildDirectory
     for p in "${_cmake_profiles[@]}"; do
       echo "*** Creating ${p:l} profile (clang)..."
       local build_dir="${d}/${_cmake_build_prefix}/clang+${p:l}"
-      local cmake_cmd="cmake ${common_flags} ${extra_flags} -DCMAKE_BUILD_TYPE=${p} \"${d}\""
+      local cmake_cmd="CC=clang CXX=clang++ cmake ${common_flags} ${extra_flags} \
+                       -DCMAKE_BUILD_TYPE=${p} \"${d}\""
       mkdir -p "${build_dir}"
-      (cd "${build_dir}" && CC=clang CXX=clang++ eval ${cmake_cmd})
+      (cd "${build_dir}" && eval ${cmake_cmd})
       echo "*** ...done!"
     done
   fi

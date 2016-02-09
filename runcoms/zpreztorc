@@ -37,7 +37,27 @@ zstyle ':prezto:load' pmodule \
   'ssh' \
   'gpg' \
   'command-not-found' \
-  'prompt'
+  'prompt' \
+  'cmake'
+
+#
+# CMake
+#
+
+# Set the install prefix.
+zstyle ':prezto:module:cmake' install-prefix '/usr'
+
+# Set the build prefix.
+zstyle ':prezto:module:cmake' build-prefix '_build'
+
+# Set the build profiles.
+zstyle ':prezto:module:cmake' profiles 'Debug' 'RelWithDebInfo'
+
+# Set the generator.
+zstyle ':prezto:module:cmake' generator 'Unix Makefiles'
+
+# Enable clang support
+zstyle ':prezto:module:cmake' support-clang 'yes'
 
 #
 # Editor
